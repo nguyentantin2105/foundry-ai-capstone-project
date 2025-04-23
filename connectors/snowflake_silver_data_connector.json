@@ -1,0 +1,16 @@
+{
+  "name": "SnowflakeSilverDataConnector",
+  "config": {
+    "connector.class": "com.snowflake.kafka.connector.SnowflakeSinkConnector",
+    "tasks.max": "1",
+    "topics": "transaction_stream_processed",
+    "snowflake.url.name": "YOUR-SNOWFLAKE-URL",
+    "snowflake.user.name": "YOUR-USERNAME",
+    "snowflake.private.key": "YOUR-PRIVATE-KEY",
+    "snowflake.database.name": "YOUR-DATABASE",
+    "snowflake.schema.name": "YOUR-SCHEMA",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false"
+  }
+}
