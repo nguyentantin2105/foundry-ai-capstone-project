@@ -15,7 +15,8 @@ merchant_suffix = ["Mart", "Store", "Shop", "Outlet", "Bazaar", "Market", "Onlin
 
 # Kafka Producer
 producer = KafkaProducer(
-    bootstrap_servers='localhost:29092',
+    # bootstrap_servers='localhost:29092',
+    bootstrap_servers='kafka:9092',
     value_serializer=lambda x: x.encode('utf-8')
 )
 

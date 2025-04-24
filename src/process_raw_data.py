@@ -4,7 +4,8 @@ import re
 import string
 
 # -- Configuration --
-BOOTSTRAP_SERVERS = 'localhost:29092'
+# BOOTSTRAP_SERVERS = 'localhost:29092'
+BOOTSTRAP_SERVERS = 'kafka:9092'
 INPUT_TOPIC = 'transaction_stream'
 OUTPUT_TOPIC = 'transaction_stream_processed'
 
