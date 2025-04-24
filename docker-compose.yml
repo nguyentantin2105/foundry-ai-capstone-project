@@ -40,3 +40,35 @@ services:
       CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
       CONNECT_PLUGIN_PATH: "/usr/share/confluent-hub-components"
 
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  airflow:
+    build: .
+    depends_on:
+      - postgres
+    container_name: airflow
+    restart: always
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/airflow 
+      - AIRFLOW__CORE__FERNET_KEY=${FERNET_KEY}
+      - AIRFLOW__CORE__DAGS_FOLDER=/opt/airflow/dags
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    volumes:
+      - .:/opt/airflow
+      - ./requirements.txt:/opt/airflow/requirements.txt
+    ports:
+      - "8085:8080"
+    command: bash -c "airflow db init && pip install -r /opt/airflow/requirements.txt && airflow users create --username ${AIRFLOW_USER} --password ${AIRFLOW_PASSWORD} --firstname admin --lastname admin --role Admin --email ${AIRFLOW_EMAIL} && airflow scheduler & airflow webserver"
+
+volumes:
+  postgres-db-volume:
